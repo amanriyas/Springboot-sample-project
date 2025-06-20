@@ -3,7 +3,7 @@ package com.example.nobsv2.product;
 import com.example.nobsv2.product.model.Product;
 import com.example.nobsv2.product.services.CreateProductServices;
 import com.example.nobsv2.product.services.DeleteProductService;
-import com.example.nobsv2.product.services.GetProductService;
+import com.example.nobsv2.product.services.GetProductsService;
 import com.example.nobsv2.product.services.UpdateProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class ProductController {
     private final CreateProductServices createProductServices;
 
 
-    private final GetProductService getProductService;
+    private final GetProductsService getProductsService;
 
 
     private final UpdateProductService updateProductService;
@@ -26,12 +26,12 @@ public class ProductController {
 
 
     public ProductController(CreateProductServices createProductServices,
-                             GetProductService getProductService,
+                             GetProductsService getProductsService,
                              UpdateProductService updateProductService,
                              DeleteProductService deleteProductService)
     {
         this.createProductServices = createProductServices;
-        this.getProductService = getProductService;
+        this.getProductsService = getProductsService;
         this.updateProductService = updateProductService;
         this.deleteProductService = deleteProductService;
     }
@@ -40,8 +40,8 @@ public class ProductController {
 
 
    @GetMapping
-    public ResponseEntity<List<Product>> getProduct() {
-       return getProductService.execute(null);
+    public ResponseEntity<List<Product>> getProducts() {
+       return getProductsService.execute(null);
    }
 
    @PostMapping
