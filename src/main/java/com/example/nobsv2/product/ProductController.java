@@ -1,10 +1,9 @@
 package com.example.nobsv2.product;
 
 import com.example.nobsv2.product.model.Product;
-import com.example.nobsv2.product.services.CreateProductServices;
-import com.example.nobsv2.product.services.DeleteProductService;
-import com.example.nobsv2.product.services.GetProductsService;
-import com.example.nobsv2.product.services.UpdateProductService;
+import com.example.nobsv2.product.model.ProductDTO;
+import com.example.nobsv2.product.model.UpdateProductCommand;
+import com.example.nobsv2.product.services.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,39 +22,45 @@ public class ProductController {
 
     private final DeleteProductService deleteProductService;
 
+    private final GetProductService getProductService;
 
 
     public ProductController(CreateProductServices createProductServices,
                              GetProductsService getProductsService,
                              UpdateProductService updateProductService,
-                             DeleteProductService deleteProductService)
+                             DeleteProductService deleteProductService,
+                             GetProductService getProductService)
     {
         this.createProductServices = createProductServices;
         this.getProductsService = getProductsService;
         this.updateProductService = updateProductService;
         this.deleteProductService = deleteProductService;
+        this.getProductService = getProductService;
     }
 
-
-
-
-   @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+   @GetMapping("/products")
+    public ResponseEntity<List<ProductDTO>> getProducts() {
        return getProductsService.execute(null);
    }
 
-   @PostMapping
-    public ResponseEntity<String> postProduct() {
-        return createProductServices.execute(null);
+   @GetMapping("/product/{id}")
+   public ResponseEntity<ProductDTO> getProductbyId(@PathVariable Integer id) {
+       return getProductService.execute(id);
    }
 
-   @PutMapping
-    public ResponseEntity<String> putProduct2() {
-        return updateProductService.execute(null);
+   @PostMapping("/product")
+    public ResponseEntity<ProductDTO> postProduct(@RequestBody Product product) {
+
+        return createProductServices.execute(product);
    }
 
-   @DeleteMapping
-    public ResponseEntity<String> deleteProduct() {
-       return deleteProductService.execute(null);
+   @PutMapping("/product/{id}")
+    public ResponseEntity<ProductDTO> putProduct2(@PathVariable Integer id, @RequestBody Product product) {
+        return updateProductService.execute(new UpdateProductCommand(id, product));
+   }
+
+   @DeleteMapping("/product/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+       return deleteProductService.execute(id);
    }
 }
