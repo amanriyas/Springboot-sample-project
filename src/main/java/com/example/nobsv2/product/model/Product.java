@@ -1,5 +1,8 @@
 package com.example.nobsv2.product.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -10,12 +13,15 @@ public class Product {
     @Column(name = "id")
     private Integer id;
 
+    @NotNull(message = "Name cannot be null")
     @Column(name = "name")
     private String name;
 
+    @Size(min = 20, message = "Description must be at least 20 characters long")
     @Column(name = "description")
     private String description;
 
+    @PositiveOrZero(message = "Price must be greater than or equal to zero")
     @Column(name = "price")
     private Double price;
 
