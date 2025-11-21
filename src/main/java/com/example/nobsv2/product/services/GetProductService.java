@@ -5,6 +5,7 @@ import com.example.nobsv2.product.ProductRepository;
 import com.example.nobsv2.product.Query;
 import com.example.nobsv2.product.model.Product;
 import com.example.nobsv2.product.model.ProductDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class GetProductService implements Query<Integer, ProductDTO> {
     }
 
     @Override
+    @Cacheable("productCache")
     public ResponseEntity<ProductDTO> execute(Integer input) {
         Optional<Product> productOptional = productRepository.findById(input);
 
